@@ -1,0 +1,12 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet id="22022024-1708535438251-create-execution_record-table" author="loi.vuu">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="execution_record"/>
+        </preConditions>
+        <sql>
+            INSERT INTO execution_record(serno, "serviceName", msgid, "requestPayload", request_timestamp) VALUES(1, 'identity-service', '1111', '{}', NOW());
+            INSERT INTO execution_record(serno, "serviceName", msgid, "requestPayload", request_timestamp) VALUES(2, 'user-service', '2222', '{}', NOW());
+            INSERT INTO execution_record(serno, "serviceName", msgid, "requestPayload", request_timestamp) VALUES(3, 'datalake-service', '3333', '{}', NOW());
+        </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -1,6 +1,7 @@
 package com.tpisoftware.api;
 
 import com.tpisoftware.core.common.exception.ApplicationException;
+import com.tpisoftware.core.common.exception.ConflictException;
 import com.tpisoftware.core.common.response.Response;
 import com.tpisoftware.core.enums.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
@@ -9,8 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -19,9 +20,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@ControllerAdvice
+@RestControllerAdvice
 @Slf4j
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<Response<Void>> handleConflictException(
+            ConflictException conflictException, WebRequest request) {
+        log.error(
+                "Conflict exception [code {}, message {}]",
+                conflictException.getReturnCode(),
+                conflictException.getReturnDesc());
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body((Response.error(conflictException.getReturnCode(), conflictException.getReturnDesc())));
+    }
 
     @ExceptionHandler(ApplicationException.class)
     public ResponseEntity<Response<Void>> handleAppException(

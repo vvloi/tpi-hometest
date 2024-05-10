@@ -1,16 +1,16 @@
 server:
   servlet:
-    context-path: /api/identity-service
+    context-path: /api/tpi-hometest
 
 spring:
   application:
     name: tpi-hometest
   datasource:
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${IDENTITY_DB_NAME:identity-service}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${IDENTITY_DB_NAME:tpi-hometest}
     username: ${DB_USER_NAME:postgres}
     password: ${DB_USER_PW:123456}
   jpa:
-    show-sql: ${SHOW_SQL:false}
+    show-sql: ${SHOW_SQL:true}
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
