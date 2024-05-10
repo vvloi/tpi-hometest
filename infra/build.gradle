@@ -1,0 +1,16 @@
+dependencies {
+    implementation project(':core')
+    implementation 'io.github.openfeign:feign-jackson:11.9.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+bootJar {
+    enabled = false
+}
+
+spotlessJava {
+    dependsOn compileJava
+}

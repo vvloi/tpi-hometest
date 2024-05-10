@@ -1,0 +1,11 @@
+bootJar {
+    enabled = false
+}
+
+test {
+    useJUnitPlatform()
+}
+
+spotlessJava {
+    dependsOn compileJava, test, jacocoTestReport
+}

@@ -1,0 +1,15 @@
+dependencies {
+    implementation project(':core')
+}
+
+test {
+    useJUnitPlatform()
+}
+
+bootJar {
+    enabled = false
+}
+
+spotlessJava {
+    dependsOn compileJava
+}

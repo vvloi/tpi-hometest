@@ -1,0 +1,134 @@
+// use plugins with modern style
+plugins {
+	id 'java'
+	id 'jacoco'
+	id 'org.sonarqube' version "4.4.1.3373"
+	id 'org.springframework.boot' version '3.2.3'
+	id 'io.spring.dependency-management' version '1.1.4'
+	id 'com.diffplug.spotless' version '6.25.0'
+}
+
+allprojects {
+	group = 'com.tpisoftware'
+	version = '0.0.1-SNAPSHOT'
+
+	ext {
+		set('snakeyaml.version','2.2') // Fix security
+		set('springCloudVersion', "2023.0.0")
+	}
+
+	repositories {
+		mavenLocal()
+		mavenCentral()
+	}
+}
+
+subprojects {
+	apply plugin: 'jacoco'
+	apply plugin: 'idea'
+	apply plugin: 'java'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+	apply plugin: 'com.diffplug.spotless'
+	apply plugin: 'org.sonarqube'
+
+	sonar {
+		properties {
+			property "sonar.sources", "src/main"
+		}
+	}
+
+	sourceCompatibility = JavaVersion.VERSION_21
+
+	project.allprojects.iterator().forEachRemaining {
+		pj -> {
+			println("Apply spotless configuration for project: " + pj.name)
+			spotless {
+				java {
+					target(fileTree(pj.projectDir) {
+						include '**/*.java'
+						exclude 'build/generated/**/*.*'
+					})
+					importOrder()
+					removeUnusedImports()
+					googleJavaFormat('1.20.0')
+					indentWithTabs(2)
+					indentWithSpaces(4)
+					endWithNewline()
+				}
+			}
+		}
+	}
+
+	dependencies {
+		implementation 'org.liquibase:liquibase-core'
+		implementation 'org.springframework.boot:spring-boot-starter-actuator'
+		implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+		implementation 'org.springframework.boot:spring-boot-starter-web'
+		implementation 'org.springframework:spring-webmvc'
+		implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+		implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+		implementation 'org.springframework.boot:spring-boot-starter-security'
+		implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+		implementation 'org.springframework.boot:spring-boot-starter-validation'
+		implementation 'org.springframework.kafka:spring-kafka'
+
+		compileOnly 'org.projectlombok:lombok:1.18.24'
+		annotationProcessor 'org.projectlombok:lombok'
+		annotationProcessor group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: '0.2.0'
+		implementation 'org.mapstruct:mapstruct:1.5.2.Final'
+		annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
+
+		runtimeOnly 'org.postgresql:postgresql'
+
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+		testImplementation 'org.testcontainers:postgresql:1.17.6'
+	}
+
+	dependencyManagement {
+		imports {
+			mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+		}
+	}
+
+	test.finalizedBy jacocoTestReport
+
+	check.dependsOn jacocoTestCoverageVerification
+
+	jacocoTestReport {
+		dependsOn test
+
+		excludedClassFilesForReport(classDirectories)
+	}
+
+	jacocoTestCoverageVerification {
+		violationRules {
+			rule {
+				limit {
+					minimum = 0.0
+				}
+			}
+		}
+
+		excludedClassFilesForReport(classDirectories)
+	}
+}
+
+private excludedClassFilesForReport(classDirectories) {
+	classDirectories.setFrom(files(classDirectories.files.collect {
+		fileTree(dir: it, exclude: [
+				"**/*Application.class",
+				'**/Application*.*',
+		])
+	}))
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+apply from: "$project.rootDir/sonar.gradle"
+
+bootJar {
+	mainClass = 'com.tpisoftware.TPISoftwareApplication'
+}

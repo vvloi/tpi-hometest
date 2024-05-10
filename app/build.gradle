@@ -1,0 +1,26 @@
+plugins {
+    id 'application'
+    id "com.google.cloud.tools.jib" version "3.3.0"
+    id 'jacoco-report-aggregation'
+}
+
+apply plugin: 'com.google.cloud.tools.jib'
+
+spotlessJava {
+    dependsOn(bootStartScripts, compileJava, processResources, startScripts)
+}
+
+dependencies {
+    implementation project(':api')
+    implementation project(':core')
+    implementation project(':infra')
+    testImplementation 'org.projectlombok:lombok:1.18.28'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.named('check') {
+    dependsOn tasks.named('testCodeCoverageReport', JacocoReport)
+}

@@ -1,0 +1,6 @@
+rootProject.name = 'tpi-hometest'
+include 'core'
+include 'infra'
+include 'api'
+include 'app'
+

@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      PGDATA: /data/postgres
+    volumes:
+       - ./mounts/postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - tpisoftware
+    restart: unless-stopped
+
+networks:
+  tpisoftware:
+    driver: bridge
