@@ -7,7 +7,14 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class Zoo {
+    /*
+     * this is a prototype scope bean, it'll create new instance of this bean when was called to
+     */
     private final Animal tiger;
+
+    /*
+     * this is a prototype scope bean, it'll create new instance of this bean when was called to
+     */
     private final Animal zebra;
 
     @PostConstruct

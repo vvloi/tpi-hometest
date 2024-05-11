@@ -1,12 +1,11 @@
 package com.tpisoftware.infra.entity;
 
 import jakarta.persistence.*;
+import java.sql.Timestamp;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
-import java.sql.Timestamp;
 
 @Entity
 @Table(name = "execution_record")
@@ -19,11 +18,10 @@ public class ExecutionRecordEntity {
             name = "sequence-generator",
             strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {
-                    @Parameter(name = "sequence_name", value = "serno_sequence"),
-                    @Parameter(name = "initial_value", value = "4"),
-                    @Parameter(name = "increment_size", value = "1")
-            }
-    )
+                @Parameter(name = "sequence_name", value = "serno_sequence"),
+                @Parameter(name = "initial_value", value = "4"),
+                @Parameter(name = "increment_size", value = "1")
+            })
     @Column(name = "serno", nullable = false)
     private int serno;
 

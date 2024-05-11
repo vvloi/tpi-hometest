@@ -4,17 +4,15 @@ import com.tpisoftware.api.dto.response.ExecutionRecordResponse;
 import com.tpisoftware.api.mapper.ExecutionRecordResponseMapper;
 import com.tpisoftware.core.common.exception.ConflictException;
 import com.tpisoftware.core.common.response.Response;
-import com.tpisoftware.core.dto.data.ExecutionRecordData;
 import com.tpisoftware.core.service.HomeTestQuestionService;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/test-controllers")

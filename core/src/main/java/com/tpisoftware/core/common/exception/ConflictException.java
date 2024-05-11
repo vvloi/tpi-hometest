@@ -1,13 +1,11 @@
 package com.tpisoftware.core.common.exception;
 
-import lombok.Getter;
-
 import java.io.Serial;
+import lombok.Getter;
 
 @Getter
 public class ConflictException extends RuntimeException {
-    @Serial
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
     private final String returnCode;
     private String returnDesc;
 

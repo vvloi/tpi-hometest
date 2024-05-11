@@ -4,8 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum ErrorCode {
-    ARGUMENT_NOT_VALID("ARGUMENT_NOT_VALID", "Some argument fields not valid")
-    ;
+    ARGUMENT_NOT_VALID("ARGUMENT_NOT_VALID", "Some argument fields not valid");
 
     ErrorCode(String code, String message) {
         this.code = code;

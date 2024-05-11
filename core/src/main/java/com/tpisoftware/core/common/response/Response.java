@@ -1,9 +1,8 @@
 package com.tpisoftware.core.common.response;
 
 import com.tpisoftware.core.enums.ErrorCode;
-import org.springframework.http.HttpStatus;
-
 import java.util.UUID;
+import org.springframework.http.HttpStatus;
 
 public record Response<T>(Status status, T payload, Object error, Meta meta) {
     private static final String SUCCESS = "SUCCESS";
